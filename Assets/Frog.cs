@@ -16,7 +16,7 @@ public class Frog : MonoBehaviour
     private bool facingleft = true;
     private Collider2D coll;
 
-    private void State()
+    private void Start()
     {
         coll = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
@@ -43,28 +43,31 @@ public class Frog : MonoBehaviour
                 }    
             }
             else
-            {   //Test if we are on the right cap
-                if (transform.position.x < RightCap)
-                {
-                    //Face the right direction
-                    if (transform.localScale.x != -1)
-                    {
-                        transform.localScale = new Vector3(-1, 1);
-                    }    
-                
-                    //Test if frog is on the ground
-                    if (coll.IsTouchingLayers(ground))
-                    {
-                        rb.velocity = new Vector2(JumpLength, JumpHeight);
-                
-                else
-                {
-                    facingleft = true;
-                }        
-                
-                    }    
-                }
+            {
+                facingleft = false;
             }
-        }    
+        }
+        else
+        {
+            //Test if we are on the right cap
+            if (transform.position.x < RightCap)
+            {
+                //Face the right direction
+                if (transform.localScale.x != -1)
+                {
+                    transform.localScale = new Vector3(-1, 1);
+                }    
+                
+                //Test if frog is on the ground
+                if (coll.IsTouchingLayers(ground))
+                {
+                    rb.velocity = new Vector2(JumpLength, JumpHeight);
+                }    
+            }
+            else
+            {
+                facingleft = true;
+            }
+        }
     }
 }

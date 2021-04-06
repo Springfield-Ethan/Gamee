@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using UnityEngine;
 
-public class Frog : MonoBehaviour
+public class Frog : Enemy
 {
     [SerializeField] private float LeftCap;
     [SerializeField] private float RightCap;
@@ -15,9 +16,9 @@ public class Frog : MonoBehaviour
     private Rigidbody2D rb;
     private bool facingleft = true;
     private Collider2D coll;
-
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         coll = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
     }
@@ -25,7 +26,21 @@ public class Frog : MonoBehaviour
 
     private void Update()
     {
-        Movement();
+        //Transition from jumping to falling
+        if (anim.GetBool("Jumping"))
+        {
+            if (rb.velocity.y < 0.1f)
+            {
+                anim.SetBool(("Jumping"), false);
+                anim.SetBool("Falling", true);
+            }    
+        }    
+        
+        //Transition from falling to idle
+        if (anim.GetBool("Falling") && coll.IsTouchingLayers(ground))
+        {
+            anim.SetBool("Falling", false);
+        }    
     }
 
     private void Movement()
@@ -45,6 +60,7 @@ public class Frog : MonoBehaviour
                 if (coll.IsTouchingLayers(ground))
                 {
                     rb.velocity = new Vector2(-JumpLength, JumpHeight);
+                    anim.SetBool("Jumping", true );
                 }
             }
             else
@@ -67,6 +83,7 @@ public class Frog : MonoBehaviour
                 if (coll.IsTouchingLayers(ground))
                 {
                     rb.velocity = new Vector2(JumpLength, JumpHeight);
+                    anim.SetBool("Jumping", true );
                 }
             }
             else
@@ -75,4 +92,5 @@ public class Frog : MonoBehaviour
             }
         }
     }
+    
 }

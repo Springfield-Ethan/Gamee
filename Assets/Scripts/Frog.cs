@@ -25,6 +25,11 @@ public class Frog : MonoBehaviour
 
     private void Update()
     {
+        Movement();
+    }
+
+    private void Movement()
+    {
         if (facingleft)
         {
             //Test if we are on the left cap
@@ -34,13 +39,13 @@ public class Frog : MonoBehaviour
                 if (transform.localScale.x != 1)
                 {
                     transform.localScale = new Vector3(1, 1);
-                }    
-                
+                }
+
                 //Test if frog is on the ground
                 if (coll.IsTouchingLayers(ground))
                 {
                     rb.velocity = new Vector2(-JumpLength, JumpHeight);
-                }    
+                }
             }
             else
             {
@@ -56,13 +61,13 @@ public class Frog : MonoBehaviour
                 if (transform.localScale.x != -1)
                 {
                     transform.localScale = new Vector3(-1, 1);
-                }    
-                
+                }
+
                 //Test if frog is on the ground
                 if (coll.IsTouchingLayers(ground))
                 {
                     rb.velocity = new Vector2(JumpLength, JumpHeight);
-                }    
+                }
             }
             else
             {
